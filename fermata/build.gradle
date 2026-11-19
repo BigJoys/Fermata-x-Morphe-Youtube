@@ -90,6 +90,10 @@ android {
         }
     }
 
+    buildFeatures {
+        aidl = true // IMorpheDisplay
+    }
+
     dynamicFeatures.addAll(gradle.ext.modules)
 
     namespace = 'me.aap.fermata'
@@ -116,4 +120,6 @@ dependencies {
     implementation libs.firebaseEncoders
     implementation libs.javaxInject
     autoImplementation libs.androidxCarApp
+    autoImplementation libs.shizukuApi
+    autoImplementation libs.shizukuProvider
 }

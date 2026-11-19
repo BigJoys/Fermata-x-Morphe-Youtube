@@ -33,6 +33,11 @@ In this fork, YouTube is replaced with [Morphe YouTube](https://morphe.software)
 * Android Auto: in mirroring mode Morphe YouTube is opened on the car screen and it's in the launcher app list instead
   of the stock YouTube app. Without mirroring, the built-in YouTube player (with SponsorBlock and the media session)
   is used, as an app started from Fermata would show up on the phone instead.
+* **Morphe YouTube in Android Auto** (no root): the *Morphe YouTube* app in Android Auto shows the real Morphe
+  YouTube app on the car screen, without mirroring the phone. Fermata starts it on a virtual display with
+  [Shizuku](https://shizuku.rikka.app), like scrcpy's "new display", and passes the car's touch and key events to it.
+  Requires Shizuku, started via wireless debugging after each reboot of the phone, and allowing Fermata in it once.
+  The back and home buttons are at the bottom left.
 * Settings > YouTube: *Use Morphe YouTube*, *Update Morphe YouTube automatically*, the GitHub repository the updates
   come from and *Check for Morphe YouTube update*.
 * Sign-in requires [MicroG-RE](https://github.com/MorpheApp/MicroG-RE).

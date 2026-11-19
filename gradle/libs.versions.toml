@@ -1,4 +1,5 @@
 [versions]
+shizuku = "13.1.5"
 # App
 appVersionCode = "268"
 appVersionName = "2.0.2"
@@ -86,6 +87,8 @@ androidxTestEspresso = "3.7.0"
 
 
 [libraries]
+shizukuApi                        = { group = "dev.rikka.shizuku",                 name = "api",                           version.ref = "shizuku" }
+shizukuProvider                   = { group = "dev.rikka.shizuku",                 name = "provider",                      version.ref = "shizuku" }
 # AndroidX
 androidxAnnotation                = { group = "androidx.annotation",               name = "annotation",                    version.ref = "androidxAnnotation" }
 androidxAppcompat                 = { group = "androidx.appcompat",                 name = "appcompat",                     version.ref = "androidxAppcompat" }
