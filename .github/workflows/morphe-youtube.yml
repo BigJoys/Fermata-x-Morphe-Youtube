@@ -121,7 +121,9 @@ jobs:
             gh release download -R EFForg/apkeep -p 'apkeep-x86_64-unknown-linux-gnu' -D tools
             chmod +x tools/apkeep-x86_64-unknown-linux-gnu
             for i in 1 2 3; do
-              tools/apkeep-x86_64-unknown-linux-gnu -a "$YT_PKG@$YT_VERSION" -d apk-pure stock && break
+              # APKPure is a mirror, the next step verifies that the APK is signed by Google
+              tools/apkeep-x86_64-unknown-linux-gnu -a "$YT_PKG@$YT_VERSION" -d apk-pure \
+                -o 'acknowledge_dangers=true' stock && break
               sleep $((i * 20))
             done
           fi
@@ -129,6 +131,31 @@ jobs:
           apk="$(ls stock/*.apk stock/*.apkm stock/*.xapk stock/*.apks 2>/dev/null | head -1 || true)"
           [ -n "$apk" ] || { echo "::error::Failed to download YouTube $YT_VERSION, run the workflow with apk_url"; exit 1; }
           echo "STOCK_APK=$apk" >> "$GITHUB_ENV"
+
+      - name: Verify that YouTube is signed by Google
+        if: steps.check.outputs.skip != 'true'
+        env:
+          # SHA-1 of Google's app signing certificate (microG: PackageUtils.GOOGLE_APP_KEY)
+          GOOGLE_CERT_SHA1: 24bb24c05e47e0aefa68a58a766179d9b613a600
+        run: |
+          set -euo pipefail
+          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)"
+          base="$STOCK_APK"
+          case "$STOCK_APK" in
+            *.apk) ;;
+            *)
+              # A bundle: verify its base APK, the biggest one
+              mkdir -p "$RUNNER_TEMP/bundle"
+              unzip -q -o "$STOCK_APK" '*.apk' -d "$RUNNER_TEMP/bundle"
+              base="$(find "$RUNNER_TEMP/bundle" -name '*.apk' -printf '%s %p\n' | sort -nr | head -1 | cut -d' ' -f2-)"
+              ;;
+          esac
+          certs="$("$apksigner" verify --print-certs "$base")"
+          echo "$certs" | grep -i 'SHA-1'
+          if ! grep -qi "SHA-1 digest: $GOOGLE_CERT_SHA1" <<< "$certs"; then
+            echo "::error::$STOCK_APK is not signed by Google, not patching it"
+            exit 1
+          fi
 
       - name: Prepare the signing keystore
         if: steps.check.outputs.skip != 'true'
