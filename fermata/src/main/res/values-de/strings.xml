@@ -388,4 +388,21 @@
     <string name="err_failed_to_download">Download fehlgeschlagen %1$s</string>
     <string name="err_no_audio_record_perm">Eine Genehmigung für Audioaufnahmen wurde nicht erteilt.</string>
     <string name="err_failed_start_service">Dienst konnte nicht gestartet werden: %s</string>
+    <string name="morphe_use">Morphe YouTube verwenden</string>
+    <string name="morphe_use_sub">Die Morphe-YouTube-App statt des eingebauten Players öffnen. Auf dem Autodisplay nur im Spiegelungsmodus, sonst wird der eingebaute Player verwendet</string>
+    <string name="morphe_not_installed">Morphe YouTube (app.morphe.android.youtube) ist nicht installiert, der eingebaute Player wird verwendet</string>
+    <string name="morphe_auto_update">Morphe YouTube automatisch aktualisieren</string>
+    <string name="morphe_auto_update_sub">Neu gepatchte Morphe-YouTube-Versionen installieren, alle paar Stunden über WLAN geprüft</string>
+    <string name="morphe_update_repo">Morphe-YouTube-Releases (GitHub-Repository)</string>
+    <string name="morphe_update_now">Nach Morphe-YouTube-Update suchen</string>
+    <string name="morphe_update_now_sub">Installiert Morphe YouTube, falls es noch nicht installiert ist</string>
+    <string name="morphe_update_checking">Suche nach Morphe-YouTube-Update…</string>
+    <string name="morphe_update_running">Das Morphe-YouTube-Update läuft bereits</string>
+    <string name="morphe_update_up_to_date">Morphe YouTube ist aktuell (%s)</string>
+    <string name="morphe_update_no_release">Kein Morphe-YouTube-Release in %s gefunden</string>
+    <string name="morphe_update_downloading">Lade Morphe YouTube %s herunter…</string>
+    <string name="morphe_update_installed">Morphe YouTube aktualisiert: %s</string>
+    <string name="morphe_update_failed">Morphe-YouTube-Update fehlgeschlagen: %s</string>
+    <string name="morphe_update_permission">Erlaube Fermata, Apps zu installieren, um Morphe YouTube zu aktualisieren</string>
+    <string name="morphe_update_conflict">Morphe-YouTube-Update fehlgeschlagen: Die installierte App ist mit einem anderen Schlüssel signiert. Mit demselben Keystore patchen oder Morphe YouTube einmal deinstallieren</string>
 </resources>

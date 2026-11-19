@@ -18,6 +18,8 @@ import me.aap.fermata.addon.FermataAddon;
 import me.aap.fermata.addon.web.R;
 import me.aap.fermata.addon.web.WebBrowserAddon;
 import me.aap.fermata.ui.activity.MainActivityPrefs;
+import me.aap.fermata.util.MorpheUpdater;
+import me.aap.fermata.util.MorpheYoutube;
 import me.aap.utils.function.BooleanSupplier;
 import me.aap.utils.function.IntSupplier;
 import me.aap.utils.function.LongSupplier;
@@ -104,6 +106,7 @@ public class YoutubeAddon extends WebBrowserAddon implements PreferenceStore.Lis
 		MainActivityPrefs.get().addBroadcastListener(this);
 		FermataApplication.get().getPreferenceStore().addBroadcastListener(this);
 
+		addMorpheSettings(ctx, set, visibility);
 		set.addBooleanPref(o -> {
 			o.store = getPreferenceStore();
 			o.pref = YT_OPEN_ON_START;
@@ -161,6 +164,43 @@ public class YoutubeAddon extends WebBrowserAddon implements PreferenceStore.Lis
 		}
 
 		YoutubeSponsorBlock.contributeSettings(getPreferenceStore(), set, visibility);
+	}
+
+	private static void addMorpheSettings(Context ctx, PreferenceSet set,
+																				ChangeableCondition visibility) {
+		PreferenceStore store = MorpheYoutube.getPreferenceStore();
+		set.addBooleanPref(o -> {
+			o.store = store;
+			o.pref = MorpheYoutube.USE_MORPHE;
+			o.title = me.aap.fermata.R.string.morphe_use;
+			o.subtitle = MorpheYoutube.isInstalled(ctx) ? me.aap.fermata.R.string.morphe_use_sub :
+					me.aap.fermata.R.string.morphe_not_installed;
+			o.visibility = visibility.copy();
+		});
+		if (!MorpheUpdater.isSupported()) return;
+		ChangeableCondition morphe = visibility.and(PrefCondition.create(store, MorpheYoutube.USE_MORPHE));
+		set.addBooleanPref(o -> {
+			o.store = store;
+			o.pref = MorpheUpdater.AUTO_UPDATE;
+			o.title = me.aap.fermata.R.string.morphe_auto_update;
+			o.subtitle = me.aap.fermata.R.string.morphe_auto_update_sub;
+			o.visibility = morphe.copy();
+		});
+		set.addStringPref(o -> {
+			o.store = store;
+			o.pref = MorpheUpdater.UPDATE_REPO;
+			o.title = me.aap.fermata.R.string.morphe_update_repo;
+			o.stringHint = MorpheUpdater.DEFAULT_REPO;
+			o.trim = true;
+			o.removeBlank = true;
+			o.visibility = morphe.copy();
+		});
+		set.addButton(o -> {
+			o.title = me.aap.fermata.R.string.morphe_update_now;
+			o.subtitle = me.aap.fermata.R.string.morphe_update_now_sub;
+			o.onClick = () -> MorpheUpdater.check(ctx, true);
+			o.visibility = morphe.copy();
+		});
 	}
 
 	@Override

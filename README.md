@@ -25,6 +25,37 @@ Supported features:
 * Pluggable media engines: MediaPlayer, ExoPlayer and VLC
 * Video player with support for subtitles and audio streams (VLC Engine only)
 
+## Morphe YouTube
+In this fork, YouTube is replaced with [Morphe YouTube](https://morphe.software)
+(`app.morphe.android.youtube`), YouTube patched with the [Morphe patches](https://github.com/MorpheApp/morphe-patches):
+
+* The YouTube entry (menu, voice commands, "open on start") opens the Morphe YouTube app when it's installed.
+* Android Auto: in mirroring mode Morphe YouTube is opened on the car screen and it's in the launcher app list instead
+  of the stock YouTube app. Without mirroring, the built-in YouTube player (with SponsorBlock and the media session)
+  is used, as an app started from Fermata would show up on the phone instead.
+* Settings > YouTube: *Use Morphe YouTube*, *Update Morphe YouTube automatically*, the GitHub repository the updates
+  come from and *Check for Morphe YouTube update*.
+* Sign-in requires [MicroG-RE](https://github.com/MorpheApp/MicroG-RE).
+
+### Automatic patching and updates
+The [Morphe YouTube workflow](.github/workflows/morphe-youtube.yml) runs every 6 hours. When Morphe has released new
+patches, it downloads the YouTube version they recommend, patches it with the Morphe CLI and publishes the signed APK as
+a release tagged `morphe-youtube-<YouTube version>-<patches version>` (the last 3 are kept). Fermata Auto checks for
+these releases over Wi-Fi every few hours and installs a newer one. After Fermata installed Morphe YouTube once,
+Android 12+ updates it without asking.
+
+Setup:
+1. Every update must be signed with the same key. Create a keystore, or export the one of Morphe Manager
+   (to update an app patched by Morphe Manager), and add it as the repository secret `MORPHE_KEYSTORE_BASE64`
+   (`base64 -w0 morphe.keystore`). If its alias or passwords differ from Morphe's defaults (alias `Morphe`, key password
+   `Morphe`, no store password), also set `MORPHE_KEY_ALIAS`, `MORPHE_KEY_PASSWORD` and `MORPHE_KEYSTORE_PASSWORD`.
+2. Scheduled workflows only run on the default branch, so merge it there. Run it once by hand: Actions >
+   Morphe YouTube > Run workflow. If the APK download from APKPure fails, pass a direct APK/APKM/XAPK URL as `apk_url`.
+3. Optional: the repository variable `MORPHE_STRIPLIBS` sets the ABIs to keep (default `arm64-v8a`, `none` keeps all).
+4. In Fermata: Settings > YouTube > *Check for Morphe YouTube update* installs it the first time.
+
+Note that the releases contain a patched YouTube APK and are public in a public repository.
+
 ## Building the project
 * Download and install the latest Android SDK or Android Studio from https://developer.android.com/studio/
 * Set the environment variable ANDROID_SDK_ROOT pointing to the SDK directory
