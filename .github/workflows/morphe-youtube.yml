@@ -17,6 +17,10 @@
 name: Morphe YouTube
 
 on:
+  # Also runs when this workflow is changed, e.g. to test it on a branch
+  push:
+    paths:
+      - '.github/workflows/morphe-youtube.yml'
   schedule:
     - cron: '23 */6 * * *'
   workflow_dispatch:
