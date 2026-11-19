@@ -131,7 +131,7 @@ jobs:
               # APKPure is a mirror, the next step verifies that the APK is signed by Google
               tools/apkeep-x86_64-unknown-linux-gnu -a "$YT_PKG@$v" -d apk-pure \
                 -o 'acknowledge_dangers=true' stock || true
-              if ls stock/*.apk stock/*.apkm stock/*.xapk stock/*.apks > /dev/null 2>&1; then
+              if [ -n "$(find stock -maxdepth 1 -type f \( -name '*.apk' -o -name '*.apkm' -o -name '*.xapk' -o -name '*.apks' \))" ]; then
                 found "$v"
                 break
               fi
@@ -140,7 +140,7 @@ jobs:
           fi
 
           ls -l stock
-          apk="$(ls stock/*.apk stock/*.apkm stock/*.xapk stock/*.apks 2>/dev/null | head -1 || true)"
+          apk="$(find stock -maxdepth 1 -type f \( -name '*.apk' -o -name '*.apkm' -o -name '*.xapk' -o -name '*.apks' \) | head -1)"
           [ -n "$apk" ] || { echo "::error::Failed to download YouTube ($YT_VERSIONS), run the workflow with apk_url"; exit 1; }
           echo "STOCK_APK=$apk" >> "$GITHUB_ENV"
           echo "skip=false" >> "$GITHUB_OUTPUT"
