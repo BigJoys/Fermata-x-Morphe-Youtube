@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import me.aap.fermata.BuildConfig;
+import me.aap.fermata.util.MorpheYoutube;
 import me.aap.fermata.addon.AddonManager;
 import me.aap.fermata.addon.web.yt.YoutubeFragment;
 import me.aap.fermata.ui.activity.MainActivityDelegate;
@@ -161,6 +162,7 @@ public class WebBrowserFragment extends MainActivityFragment
 					AddonManager.get().hasAddon(me.aap.fermata.R.id.youtube_fragment)) {
 				String u = url;
 				MainActivityDelegate.getActivityDelegate(requireContext()).onSuccess(a -> {
+					if (MorpheYoutube.shouldOpenApp(a) && MorpheYoutube.openApp(a.getContext(), u)) return;
 					if (a.showFragment(me.aap.fermata.R.id.youtube_fragment) instanceof YoutubeFragment f)
 						f.loadUrl(u);
 				});

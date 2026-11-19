@@ -159,8 +159,34 @@ public final class MorpheUpdater {
 		PackageInfo pi = MorpheYoutube.getPackageInfo(ctx);
 		if (pi == null) return manual;
 		if (rel.tag.equals(ps.getStringPref(INSTALLED_TAG))) return false;
-		// Patched after the installed app was installed or updated, by Fermata or by Morphe Manager
-		return rel.publishedAt > pi.lastUpdateTime;
+		int cmp = compareVersions(rel.ytVersion(), pi.versionName);
+		// A newer YouTube version. An older one can't be installed over it.
+		if (cmp != 0) return cmp > 0;
+		// The same YouTube version: newer patches if patched after the app was installed or updated,
+		// by Fermata or by Morphe Manager. Manually, also reinstall it.
+		return manual || (rel.publishedAt > pi.lastUpdateTime);
+	}
+
+	// Compares dotted versions, e.g. 21.23.492, ignoring anything after the numbers
+	static int compareVersions(@Nullable String a, @Nullable String b) {
+		if ((a == null) || (b == null)) return 0;
+		String[] va = a.split("[^0-9]+");
+		String[] vb = b.split("[^0-9]+");
+		for (int i = 0, n = Math.max(va.length, vb.length); i < n; i++) {
+			long x = parse(va, i);
+			long y = parse(vb, i);
+			if (x != y) return (x < y) ? -1 : 1;
+		}
+		return 0;
+	}
+
+	private static long parse(String[] v, int i) {
+		if ((i >= v.length) || v[i].isEmpty()) return 0;
+		try {
+			return Long.parseLong(v[i]);
+		} catch (NumberFormatException ex) {
+			return 0;
+		}
 	}
 
 	@Nullable
@@ -314,6 +340,14 @@ public final class MorpheUpdater {
 			this.url = url;
 			this.size = size;
 			this.publishedAt = publishedAt;
+		}
+
+		// morphe-youtube-<YouTube version>-<patches version>
+		@Nullable
+		String ytVersion() {
+			String v = tag.substring(TAG_PREFIX.length());
+			int i = v.indexOf('-');
+			return (i > 0) ? v.substring(0, i) : null;
 		}
 	}
 }

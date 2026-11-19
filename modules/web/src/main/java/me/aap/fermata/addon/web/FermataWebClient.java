@@ -13,6 +13,7 @@ import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
 
 import me.aap.fermata.addon.web.yt.YoutubeFragment;
+import me.aap.fermata.util.MorpheYoutube;
 import me.aap.fermata.ui.activity.MainActivityDelegate;
 import me.aap.utils.async.Completed;
 import me.aap.utils.async.FutureSupplier;
@@ -69,6 +70,10 @@ public class FermataWebClient extends WebViewClientCompat {
 				MainActivityDelegate a =
 						MainActivityDelegate.getActivityDelegate(view.getContext()).peek();
 				if (a == null) return false;
+				if (MorpheYoutube.shouldOpenApp(a) &&
+						MorpheYoutube.openApp(a.getContext(), request.getUrl().toString())) {
+					return true;
+				}
 				if (!(a.showFragment(me.aap.fermata.R.id.youtube_fragment) instanceof YoutubeFragment f))
 					return false;
 				f.loadUrl(request.getUrl().toString());

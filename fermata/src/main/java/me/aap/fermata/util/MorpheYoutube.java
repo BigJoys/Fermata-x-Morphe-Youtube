@@ -72,6 +72,10 @@ public final class MorpheYoutube {
 				FermataApplication.get().isMirroringMode();
 	}
 
+	public static String searchUrl(@Nullable String query) {
+		return "https://www.youtube.com/results?search_query=" + Uri.encode((query == null) ? "" : query);
+	}
+
 	/**
 	 * Opens the Morphe YouTube app, with the given YouTube url, if not null.
 	 */
