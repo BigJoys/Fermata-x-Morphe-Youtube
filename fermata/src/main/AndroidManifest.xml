@@ -52,6 +52,9 @@
         <intent>
             <action android:name="android.intent.action.MEDIA_BUTTON" />
         </intent>
+        <!-- Morphe YouTube, which replaces YouTube, and the stock YouTube app as a fallback -->
+        <package android:name="app.morphe.android.youtube" />
+        <package android:name="com.google.android.youtube" />
     </queries>
 
     <application
@@ -895,6 +898,9 @@
         </receiver>
 
         <receiver android:name=".media.lib.AtvUpdateReceiver" />
+        <receiver
+            android:name=".util.MorpheInstallReceiver"
+            android:exported="false" />
 
         <provider
             android:name="me.aap.fermata.provider.FermataContentProvider"

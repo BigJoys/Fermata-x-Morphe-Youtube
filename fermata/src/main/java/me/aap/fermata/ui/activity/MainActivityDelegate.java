@@ -123,6 +123,8 @@ import me.aap.fermata.ui.fragment.SubtitlesFragment;
 import me.aap.fermata.ui.view.BodyLayout;
 import me.aap.fermata.ui.view.ControlPanelView;
 import me.aap.fermata.ui.view.VideoView;
+import me.aap.fermata.util.MorpheUpdater;
+import me.aap.fermata.util.MorpheYoutube;
 import me.aap.utils.app.App;
 import me.aap.utils.async.FutureSupplier;
 import me.aap.utils.async.Promise;
@@ -391,6 +393,7 @@ public class MainActivityDelegate extends ActivityDelegate
 		checkMirroringMode(true);
 		if (AUTO && getAppActivity().isCarActivity())
 			getMediaServiceBinder().getMediaSessionCallback().onCarScreenShown();
+		MorpheUpdater.checkOnStart(getContext());
 		for (FermataAddon addon : AddonManager.get().getAddons()) {
 			if (addon instanceof FermataActivityAddon)
 				((FermataActivityAddon) addon).onActivityResume(this);
@@ -705,6 +708,10 @@ public class MainActivityDelegate extends ActivityDelegate
 	@Nullable
 	@Override
 	public ActivityFragment showFragment(int id, Object input) {
+		if ((id == R.id.youtube_fragment) && MorpheYoutube.shouldOpenApp(this) &&
+				MorpheYoutube.openApp(getContext(), null)) {
+			return getActiveFragment();
+		}
 		BodyLayout b = getBody();
 		if (b.isVideoMode()) b.setMode(BodyLayout.Mode.BOTH);
 		return super.showFragment(id, input);

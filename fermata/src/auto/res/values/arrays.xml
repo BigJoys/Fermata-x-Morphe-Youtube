@@ -4,5 +4,6 @@
         <item>com.google.android.projection.gearhead</item>
         <item>com.android.chrome</item>
         <item>com.google.android.apps.maps</item>
+        <item>app.morphe.android.youtube</item>
     </string-array>
 </resources>

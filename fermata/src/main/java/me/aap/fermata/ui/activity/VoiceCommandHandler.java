@@ -31,6 +31,7 @@ import me.aap.fermata.media.service.MediaSessionCallback;
 import me.aap.fermata.ui.fragment.FavoritesFragment;
 import me.aap.fermata.ui.fragment.MainActivityFragment;
 import me.aap.fermata.ui.fragment.MediaLibFragment;
+import me.aap.fermata.util.MorpheYoutube;
 import me.aap.utils.log.Log;
 import me.aap.utils.text.PatternCompat;
 import me.aap.utils.text.SharedTextBuilder;
@@ -231,6 +232,10 @@ class VoiceCommandHandler {
 			}
 
 			if (fid == ID_NULL) return false;
+			if ((fid == R.id.youtube_fragment) && MorpheYoutube.shouldOpenApp(activity)) {
+				// Search in Morphe YouTube, which replaces the YouTube fragment
+				return MorpheYoutube.openApp(activity.getContext(), MorpheYoutube.searchUrl(vcmd.getQuery()));
+			}
 			activity.showFragment(fid);
 			searchInFragment(fid, vcmd, 0);
 			return true;

@@ -58,6 +58,7 @@ import me.aap.fermata.FermataApplication;
 import me.aap.fermata.R;
 import me.aap.fermata.ui.activity.MainActivityDelegate;
 import me.aap.fermata.ui.activity.MainActivityPrefs;
+import me.aap.fermata.util.MorpheYoutube;
 import me.aap.utils.collection.CollectionUtils;
 import me.aap.utils.function.Supplier;
 import me.aap.utils.pref.PreferenceStore.Pref;
@@ -67,7 +68,8 @@ public class LauncherActivity extends AppCompatActivity {
 	public static final String INTENT_EXTRA_MODE = "fermata.mirror.mode";
 	private static final Pref<Supplier<String[]>> AA_LAUNCHER_APPS = Pref.sa("AA_LAUNCHER_APPS",
 			() -> new String[]{FermataApplication.get().getPackageName(), "com.android.chrome",
-					"com.google.android.gm", "com.google.android.apps.maps", "com.google.android.youtube"});
+					"com.google.android.gm", "com.google.android.apps.maps",
+					MorpheYoutube.getYoutubePackage(FermataApplication.get())});
 	private static LauncherActivity activeInstance;
 
 	static LauncherActivity getActiveInstance() {
@@ -187,7 +189,11 @@ public class LauncherActivity extends AppCompatActivity {
 			var addApp = AppInfo.ADD.pkg + '#' + AppInfo.ADD.name;
 			var exitApp = AppInfo.EXIT.pkg + '#' + AppInfo.EXIT.name;
 
+			var morphe = MorpheYoutube.isInstalled(getContext());
+
 			for (var app : selectedApps) {
+				// Morphe YouTube replaces YouTube, the activity names are the same
+				if (morphe) app = replaceYoutube(app);
 				for (var info : allApps) {
 					var pkg = info.activityInfo.packageName;
 					if (app.equals(addApp)) {
@@ -202,8 +208,9 @@ public class LauncherActivity extends AppCompatActivity {
 					if (app.startsWith(pkg) && (app.equals(pkg) ||
 							(app.endsWith(info.activityInfo.name) && (app.charAt(pkg.length()) == '#') &&
 									(app.length() == (pkg.length() + info.activityInfo.name.length() + 1))))) {
-						apps.add(new AppInfo(info.activityInfo.packageName, info.activityInfo.name,
-								info.loadLabel(pm).toString(), info.loadIcon(pm)));
+						var ai = new AppInfo(info.activityInfo.packageName, info.activityInfo.name,
+								info.loadLabel(pm).toString(), info.loadIcon(pm));
+						if (!apps.contains(ai)) apps.add(ai); // Both YouTube and Morphe YouTube selected
 						break;
 					}
 				}
@@ -211,6 +218,14 @@ public class LauncherActivity extends AppCompatActivity {
 
 			if (addApp != null) apps.add(AppInfo.ADD);
 			return apps;
+		}
+
+		private static String replaceYoutube(String app) {
+			var yt = MorpheYoutube.YOUTUBE_PKG;
+			if (app.equals(yt) || (app.startsWith(yt) && (app.charAt(yt.length()) == '#'))) {
+				return MorpheYoutube.MORPHE_PKG + app.substring(yt.length());
+			}
+			return app;
 		}
 
 		private List<ResolveInfo> loadAllAppList(PackageManager pm) {
