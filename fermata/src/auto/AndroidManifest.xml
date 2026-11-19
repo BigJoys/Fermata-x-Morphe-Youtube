@@ -27,6 +27,7 @@
         <intent>
             <action android:name="android.intent.action.MAIN" />
         </intent>
+        <package android:name="moe.shizuku.privileged.api" />
     </queries>
 
 
@@ -86,6 +87,29 @@
                 <category android:name="androidx.car.app.category.NAVIGATION" />
             </intent-filter>
         </service>
+
+        <!-- Morphe YouTube on the car screen, via a virtual display created with Shizuku -->
+        <service
+            android:name="me.aap.fermata.auto.MorpheCarService"
+            android:exported="true"
+            android:icon="@drawable/youtube"
+            android:label="@string/morphe_car_name"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.google.android.gms.car.category.CATEGORY_PROJECTION" />
+                <category android:name="com.google.android.gms.car.category.CATEGORY_PROJECTION_OEM" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
         <activity
             android:name="me.aap.fermata.auto.ProjectionActivity"

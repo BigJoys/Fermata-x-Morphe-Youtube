@@ -389,7 +389,7 @@
     <string name="err_no_audio_record_perm">Eine Genehmigung für Audioaufnahmen wurde nicht erteilt.</string>
     <string name="err_failed_start_service">Dienst konnte nicht gestartet werden: %s</string>
     <string name="morphe_use">Morphe YouTube verwenden</string>
-    <string name="morphe_use_sub">Die Morphe-YouTube-App statt des eingebauten Players öffnen. Auf dem Autodisplay nur im Spiegelungsmodus, sonst wird der eingebaute Player verwendet</string>
+    <string name="morphe_use_sub">Die Morphe-YouTube-App statt des eingebauten Players öffnen. Im Auto die App „Morphe YouTube“ in Android Auto (benötigt Shizuku) oder die Spiegelung verwenden, sonst wird der eingebaute Player verwendet</string>
     <string name="morphe_not_installed">Morphe YouTube (app.morphe.android.youtube) ist nicht installiert, der eingebaute Player wird verwendet</string>
     <string name="morphe_auto_update">Morphe YouTube automatisch aktualisieren</string>
     <string name="morphe_auto_update_sub">Neu gepatchte Morphe-YouTube-Versionen installieren, alle paar Stunden über WLAN geprüft</string>
@@ -405,4 +405,13 @@
     <string name="morphe_update_failed">Morphe-YouTube-Update fehlgeschlagen: %s</string>
     <string name="morphe_update_permission">Erlaube Fermata, Apps zu installieren, um Morphe YouTube zu aktualisieren</string>
     <string name="morphe_update_conflict">Morphe-YouTube-Update fehlgeschlagen: Die installierte App ist mit einem anderen Schlüssel signiert. Mit demselben Keystore patchen oder Morphe YouTube einmal deinstallieren</string>
+    <string name="morphe_car_connecting">Morphe YouTube wird gestartet…</string>
+    <string name="morphe_car_not_installed">Morphe YouTube ist nicht installiert. Installiere es in Fermata: Einstellungen > YouTube > Nach Morphe-YouTube-Update suchen</string>
+    <string name="morphe_car_shizuku_not_installed">Morphe YouTube im Auto benötigt die App Shizuku. Installiere Shizuku auf dem Handy, starte es und tippe hier</string>
+    <string name="morphe_car_shizuku_not_running">Shizuku läuft nicht. Starte es auf dem Handy (Shizuku > Über kabelloses Debugging starten) und tippe hier</string>
+    <string name="morphe_car_shizuku_allow">Erlaube Fermata im Shizuku-Dialog auf dem Handy</string>
+    <string name="morphe_car_shizuku_denied">Fermata darf Shizuku nicht nutzen. Erlaube es in der Shizuku-App auf dem Handy und tippe hier</string>
+    <string name="morphe_car_shizuku_old">Die Shizuku-Version ist zu alt, bitte aktualisiere sie</string>
+    <string name="morphe_car_shizuku_failed">Morphe YouTube konnte über Shizuku nicht angezeigt werden. Tippe hier, um es erneut zu versuchen</string>
+    <string name="morphe_car_start_failed">Morphe YouTube konnte nicht gestartet werden. Tippe hier, um es erneut zu versuchen</string>
 </resources>
