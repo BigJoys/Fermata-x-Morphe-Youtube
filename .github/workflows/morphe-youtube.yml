@@ -83,7 +83,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "${YT_VERSION:-}" ]; then
-            out="$(java -jar "$CLI" list-versions -p "$MPP" -f "$YT_PKG" 2>&1)"
+            out="$(java -jar "$CLI" list-versions --patches "$MPP" --filter-package-names "$YT_PKG" 2>&1 || true)"
             echo "$out"
             # The most common compatible version is listed first, e.g. 20.14.43
             YT_VERSION="$(grep -oE '\b[0-9]{2}\.[0-9]{2}\.[0-9]{2,3}\b' <<< "$out" | head -1 || true)"
@@ -153,7 +153,7 @@ jobs:
           set -euo pipefail
           mkdir -p out
           OUT="out/youtube-${YT_VERSION}-morphe-${PATCHES_TAG}.apk"
-          args=(patch -p "$MPP" -o "$OUT" -t "$RUNNER_TEMP/morphe-tmp"
+          args=(patch --patches "$MPP" -o "$OUT" -t "$RUNNER_TEMP/morphe-tmp"
             --keystore "$RUNNER_TEMP/morphe.keystore"
             --keystore-entry-alias "${KEY_ALIAS:-Morphe}"
             --keystore-entry-password "${KEY_PASSWORD:-Morphe}")
